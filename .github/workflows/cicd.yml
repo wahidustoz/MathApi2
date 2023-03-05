@@ -49,3 +49,18 @@ jobs:
       run: |
         docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
         docker push $DOCKER_USERNAME/mathapi
+
+  deploy:
+    name: Deploy to Digital Ocean
+    needs: dockerize
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy .NET app on Digital Ocean server
+        uses: appleboy/ssh-action@v0.1.8
+        with:
+          host: ${{ secrets.HOST_IP }}
+          key: ${{ secrets.HOST_KEY }}
+          username: ${{ secrets.HOST_USERNAME }}
+          script: |
+            cd ~/app
+            docker-compose up -d --no-deps --build mathapi

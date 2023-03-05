@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  mathapi:
+    image: davidwahid/mathapi-test
+    container_name: "mathapi"
+    restart: always
+    ports:
+      - "80:5000"
+    networks:
+      - web
+
+networks:
+  web:
+    external: true
